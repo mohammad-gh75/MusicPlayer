@@ -18,21 +18,22 @@ import java.util.List;
 
 
 public class SongListFragment extends Fragment {
-    /*public static final int TASK_DETAIL_REQUEST_CODE = 0;
-    public static final String DIALOG_FRAGMENT_TAG = "Dialog";*/
+    public static final String ARG_NAME = "argName";
+    public static final String ARG_TYPE = "argType";
     private RecyclerView mRecyclerView;
     private SongListAdapter mAdapter;
     private List<Song> mSongs;
-    //    private ConstraintLayout mEmptyListLayout;
     private SongRepository mRepository;
 
     public SongListFragment() {
         // Required empty public constructor
     }
 
-    public static SongListFragment newInstance() {
+    public static SongListFragment newInstance(String Name, String type) {
         SongListFragment fragment = new SongListFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_NAME, Name);
+        args.putString(ARG_TYPE, type);
         fragment.setArguments(args);
         return fragment;
     }
@@ -41,7 +42,19 @@ public class SongListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRepository = SongRepository.getInstance(getActivity());
-        mSongs = mRepository.getSongList();
+        getSongs();
+    }
+
+    private void getSongs() {
+        String name = getArguments().getString(ARG_NAME);
+        String type = getArguments().getString(ARG_TYPE);
+        if (name == null || type == null) {
+            mSongs = mRepository.getSongList();
+        } else if (type.toLowerCase().equals("artist")) {
+            mSongs = mRepository.getArtistSongs(name);
+        } else if (type.toLowerCase().equals("album")) {
+            mSongs = mRepository.getAlbumSongs(name);
+        }
     }
 
     @Override
@@ -60,9 +73,9 @@ public class SongListFragment extends Fragment {
     }
 
     private void updateUI() {
-        mSongs = mRepository.getSongList();
+        getSongs();
         if (mAdapter == null) {
-            mAdapter = new SongListAdapter(this,mSongs);
+            mAdapter = new SongListAdapter(this, mSongs);
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setSongList(mSongs);

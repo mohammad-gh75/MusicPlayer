@@ -1,5 +1,6 @@
 package org.maktab36.musicplayer.utils;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.maktab36.musicplayer.R;
+import org.maktab36.musicplayer.controller.activity.SongListActivity;
 import org.maktab36.musicplayer.model.Artist;
 import org.maktab36.musicplayer.model.Song;
 import org.maktab36.musicplayer.repository.SongRepository;
@@ -66,9 +68,10 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Ar
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    List<Song> artistSongs=SongRepository
-                            .getInstance(mFragment.getActivity())
-                            .getArtistSongs(mArtist.getName());
+                    Intent intent= SongListActivity.newIntent(mFragment.getActivity(),
+                            mArtist.getName(),
+                            "artist");
+                    mFragment.startActivity(intent);
                 }
             });
         }

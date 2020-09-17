@@ -1,5 +1,6 @@
 package org.maktab36.musicplayer.utils;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.maktab36.musicplayer.R;
+import org.maktab36.musicplayer.controller.activity.SongListActivity;
 import org.maktab36.musicplayer.model.Album;
 
 import java.util.List;
@@ -55,6 +57,7 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Albu
 
         public AlbumHolder(@NonNull View itemView) {
             super(itemView);
+
             mAlbumName=itemView.findViewById(R.id.album_name);
             mNumberOfSong=itemView.findViewById(R.id.number_of_song);
             mAlbumListIcon=itemView.findViewById(R.id.album_list_icon);
@@ -62,6 +65,10 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Albu
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    Intent intent= SongListActivity.newIntent(mFragment.getActivity(),
+                            mAlbum.getName(),
+                            "album");
+                    mFragment.startActivity(intent);
                 }
             });
         }

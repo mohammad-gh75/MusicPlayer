@@ -1,9 +1,6 @@
 package org.maktab36.musicplayer.model;
 
 
-import android.media.MediaPlayer;
-import android.provider.MediaStore;
-
 public class Song {
     private long id;
     private String mPath;

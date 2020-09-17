@@ -106,7 +106,7 @@ public class TabViewPagerActivity extends AppCompatActivity {
                 case 2:
                     return AlbumListFragment.newInstance();
                 default:
-                    return SongListFragment.newInstance();
+                    return SongListFragment.newInstance(null,null);
             }
         }
         @Override

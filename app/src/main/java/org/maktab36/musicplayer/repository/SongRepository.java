@@ -61,7 +61,7 @@ public class SongRepository {
             try {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
-                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA));
                     String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                     String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
@@ -151,5 +151,15 @@ public class SongRepository {
             }
         }
         return artistSong;
+    }
+
+    public List<Song> getAlbumSongs(String albumName){
+        List<Song> albumSong=new ArrayList<>();
+        for (Song song :mSongList) {
+            if(song.getAlbum().equals(albumName)){
+                albumSong.add(song);
+            }
+        }
+        return albumSong;
     }
 }
