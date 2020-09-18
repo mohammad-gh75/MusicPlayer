@@ -1,7 +1,9 @@
 package org.maktab36.musicplayer.model;
 
 
-public class Song {
+import java.io.Serializable;
+
+public class Song implements Serializable {
     private long id;
     private String mPath;
     private String mTitle;

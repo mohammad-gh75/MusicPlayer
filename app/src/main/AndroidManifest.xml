@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".controller.activity.SongListActivity"></activity>
+        <activity android:name=".controller.activity.SongPlayActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".controller.activity.SongListActivity" />
         <activity android:name=".controller.activity.SingleFragmentActivity" />
         <activity android:name=".controller.activity.TabViewPagerActivity">
             <intent-filter>
