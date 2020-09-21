@@ -1,8 +1,11 @@
 package org.maktab36.musicplayer.model;
 
+import android.graphics.Bitmap;
+
 public class Album {
     private String mName;
     private int mNumberOfSong;
+    private Bitmap mCover;
 
     public String getName() {
         return mName;
@@ -20,12 +23,21 @@ public class Album {
         mNumberOfSong = numberOfSong;
     }
 
-    public Album(String name) {
-        this(name,1);
+    public Bitmap getCover() {
+        return mCover;
     }
 
-    public Album(String name, int numberOfSong) {
+    public void setCover(Bitmap cover) {
+        mCover = cover;
+    }
+
+    public Album(String name,Bitmap cover) {
+        this(name,1,cover);
+    }
+
+    public Album(String name, int numberOfSong,Bitmap cover) {
         mName = name;
         mNumberOfSong = numberOfSong;
+        mCover=cover;
     }
 }

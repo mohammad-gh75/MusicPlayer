@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.maktab36.musicplayer.R;
 import org.maktab36.musicplayer.controller.activity.SongPlayActivity;
 import org.maktab36.musicplayer.model.Song;
+import org.maktab36.musicplayer.repository.SongRepository;
 
 import java.util.List;
 import java.util.UUID;
@@ -42,7 +43,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongHo
     @Override
     public void onBindViewHolder(@NonNull SongHolder holder, int position) {
         Song song = mSongList.get(position);
-        holder.bindTask(song);
+        holder.bindTask(song,position);
     }
 
     @Override
@@ -52,6 +53,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongHo
 
     public class SongHolder extends RecyclerView.ViewHolder {
         private Song mSong;
+        private int mPosition;
         private TextView mSongTitle;
         private TextView mSongArtistAndAlbum;
 
@@ -63,18 +65,21 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongHo
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent= SongPlayActivity.newIntent(mFragment.getActivity(),mSong);
+                    SongRepository.getInstance(mFragment.getActivity()).setCurrentPlayList(mSongList);
+                    Intent intent= SongPlayActivity.newIntent(mFragment.getActivity(),mPosition);
                     mFragment.startActivity(intent);
                 }
             });
         }
 
-        public void bindTask(Song song) {
+        public void bindTask(Song song,int position) {
             mSong = song;
+            mPosition=position;
             mSongTitle.setText(song.getTitle());
             String artistAndAlbum=mFragment.getString(R.string.song_artist_and_album,
                     song.getArtist(),song.getAlbum());
             mSongArtistAndAlbum.setText(artistAndAlbum);
+
         }
     }
 }

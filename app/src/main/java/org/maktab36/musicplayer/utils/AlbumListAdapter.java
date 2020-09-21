@@ -79,6 +79,7 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Albu
             String numberOfSong=mFragment.getString(R.string.number_of_song,
                     album.getNumberOfSong());
             mNumberOfSong.setText(numberOfSong);
+            mAlbumListIcon.setImageBitmap(album.getCover());
         }
     }
 }

@@ -12,11 +12,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/shape_artist_list"
-        android:padding="12dp"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_song"
-        app:tint="#A6A5A5" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/artist_name"

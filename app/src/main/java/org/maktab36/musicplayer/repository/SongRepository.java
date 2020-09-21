@@ -2,13 +2,18 @@ package org.maktab36.musicplayer.repository;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import org.maktab36.musicplayer.R;
 import org.maktab36.musicplayer.model.Album;
 import org.maktab36.musicplayer.model.Artist;
 import org.maktab36.musicplayer.model.Song;
+import org.maktab36.musicplayer.model.SongRepeatStates;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,7 +27,8 @@ public class SongRepository {
     private List<Song> mSongList;
     private List<Artist> mArtistList;
     private List<Album> mAlbumList;
-//    private TaskDataBase mDatabase;
+    private List<Song> mCurrentPlayList;
+    private SongRepeatStates mRepeatState;
 
     public static SongRepository getInstance(Context context) {
         mContext = context.getApplicationContext();
@@ -33,18 +39,25 @@ public class SongRepository {
     }
 
     private SongRepository() {
-        /*mDatabase = Room.databaseBuilder(mContext,
-                TaskDataBase.class,
-                "TaskManagerDB")
-                .allowMainThreadQueries()
-                .build();*/
+        mRepeatState = SongRepeatStates.PLAY_IN_ORDER;
+        mPlayer = new MediaPlayer();
         Uri externalContentUriUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-//        Uri internalContentUri = MediaStore.Audio.Media.INTERNAL_CONTENT_URI;
         mSongList = new ArrayList<>();
         mArtistList = new ArrayList<>();
-        mAlbumList=new ArrayList<>();
+        mAlbumList = new ArrayList<>();
         getSongFromUri(externalContentUriUri);
-//        getSongFromUri(internalContentUri);
+    }
+
+    public MediaPlayer getPlayer() {
+        return mPlayer;
+    }
+
+    public SongRepeatStates getRepeatState() {
+        return mRepeatState;
+    }
+
+    public void setRepeatState(SongRepeatStates repeatState) {
+        mRepeatState = repeatState;
     }
 
     public void getSongFromUri(Uri uri) {
@@ -61,20 +74,74 @@ public class SongRepository {
             try {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
-                    String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.AudioColumns.DATA));
-                    String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                    String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
-                    String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                    String path = cursor.getString(cursor
+                            .getColumnIndex(MediaStore.Audio.AudioColumns.DATA));
+                    String title = cursor.getString(cursor
+                            .getColumnIndex(MediaStore.Audio.Media.TITLE));
+                    String album = cursor.getString(cursor
+                            .getColumnIndex(MediaStore.Audio.Media.ALBUM));
+                    String artist = cursor.getString(cursor
+                            .getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                    int albumId = cursor.getInt(cursor
+                            .getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
 
-                    mSongList.add(new Song(path, title, artist, album));
-                    addToArtistList(artist);
-                    addToAlbumList(album);
+                    Bitmap cover = getAlbumCover(path);
+                    mSongList.add(new Song(path, title, artist, album, cover));
+                    addToArtistList(artist,cover);
+                    addToAlbumList(album,cover);
                     cursor.moveToNext();
                 }
             } finally {
                 cursor.close();
             }
         }
+    }
+
+    private Bitmap getAlbumCover(String songPath) {
+        Bitmap cover;
+        byte[] byteCover;
+        MediaMetadataRetriever metadataRetriever = new MediaMetadataRetriever();
+        metadataRetriever.setDataSource(songPath);
+        byteCover = metadataRetriever.getEmbeddedPicture();
+        if (byteCover != null) {
+//            cover= PictureUtils.getScaledBitmap(byteCover,180,180);
+            cover = BitmapFactory.decodeByteArray(byteCover, 0, byteCover.length);
+        } else {
+            /*cover = BitmapFactory
+                    .decodeResource(mContext.getResources(), R.drawable.ic_song);*/
+            cover=null;
+        }
+
+        /*Uri uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+        String selection = MediaStore.Audio.Albums._ID + "=?";
+        String[] selectionArgs = new String[]{String.valueOf(albumId)};
+        Cursor cursor = mContext
+                .getContentResolver()
+                .query(uri,
+                        null,
+                        selection,
+                        selectionArgs,
+                        null);
+
+        if (cursor != null && cursor.getCount() > 0) {
+            try {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    String coverPath = cursor.getString(cursor
+                            .getColumnIndex(MediaStore.Audio.Albums.ALBUM_ART));
+                    if (coverPath != null) {
+                        cover = BitmapFactory.decodeFile(coverPath);
+                    } else {
+                        cover = BitmapFactory
+                                .decodeResource(mContext.getResources(), R.drawable.ic_song);
+                    }
+                    cursor.moveToNext();
+                }
+            } finally {
+                cursor.close();
+            }
+        }*/
+        return cover;
     }
 
     public List<Song> getSongList() {
@@ -95,10 +162,10 @@ public class SongRepository {
         return mArtistList;
     }
 
-    private void addToArtistList(String name) {
+    private void addToArtistList(String name,Bitmap cover) {
         boolean equalityFlag = false;
         if (mArtistList.size() == 0) {
-            Artist artist = new Artist(name);
+            Artist artist = new Artist(name,cover);
             mArtistList.add(artist);
         } else {
             for (Artist artist : mArtistList) {
@@ -108,13 +175,13 @@ public class SongRepository {
                 }
             }
             if (!equalityFlag) {
-                Artist artist1 = new Artist(name);
+                Artist artist1 = new Artist(name,cover);
                 mArtistList.add(artist1);
             }
         }
     }
 
-    public List<Album> getAlbumList(){
+    public List<Album> getAlbumList() {
         Collections.sort(mAlbumList, new Comparator<Album>() {
             @Override
             public int compare(Album o1, Album o2) {
@@ -124,42 +191,50 @@ public class SongRepository {
         return mAlbumList;
     }
 
-    private void addToAlbumList(String name){
+    private void addToAlbumList(String name,Bitmap cover) {
         boolean equalityFlag = false;
         if (mAlbumList.size() == 0) {
-            Album album=new Album(name);
+            Album album = new Album(name,cover);
             mAlbumList.add(album);
         } else {
             for (Album album : mAlbumList) {
                 if (album.getName().equals(name)) {
-                    album.setNumberOfSong(album.getNumberOfSong()+1);
+                    album.setNumberOfSong(album.getNumberOfSong() + 1);
                     equalityFlag = true;
                 }
             }
             if (!equalityFlag) {
-                Album album=new Album(name);
+                Album album = new Album(name,cover);
                 mAlbumList.add(album);
             }
         }
     }
 
-    public List<Song> getArtistSongs(String artistName){
-        List<Song> artistSong=new ArrayList<>();
-        for (Song song :mSongList) {
-            if(song.getArtist().equals(artistName)){
+    public List<Song> getArtistSongs(String artistName) {
+        List<Song> artistSong = new ArrayList<>();
+        for (Song song : mSongList) {
+            if (song.getArtist().equals(artistName)) {
                 artistSong.add(song);
             }
         }
         return artistSong;
     }
 
-    public List<Song> getAlbumSongs(String albumName){
-        List<Song> albumSong=new ArrayList<>();
-        for (Song song :mSongList) {
-            if(song.getAlbum().equals(albumName)){
+    public List<Song> getAlbumSongs(String albumName) {
+        List<Song> albumSong = new ArrayList<>();
+        for (Song song : mSongList) {
+            if (song.getAlbum().equals(albumName)) {
                 albumSong.add(song);
             }
         }
         return albumSong;
+    }
+
+    public List<Song> getCurrentPlayList() {
+        return mCurrentPlayList;
+    }
+
+    public void setCurrentPlayList(List<Song> currentPlayList) {
+        mCurrentPlayList = currentPlayList;
     }
 }

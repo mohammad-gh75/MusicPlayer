@@ -7,10 +7,10 @@
         </shape>
     </item>
     <item
-        android:bottom="12dp"
+        android:bottom="32dp"
         android:drawable="@drawable/ic_song"
-        android:left="12dp"
-        android:right="12dp"
-        android:top="12dp">
+        android:left="32dp"
+        android:right="32dp"
+        android:top="32dp">
     </item>
 </layer-list>

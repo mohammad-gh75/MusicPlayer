@@ -82,6 +82,7 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Ar
             String numberOfSong=mFragment.getString(R.string.number_of_song,
                     artist.getNumberOfSongs());
             mNumberOfSong.setText(numberOfSong);
+            mArtistListIcon.setImageBitmap(artist.getCover());
         }
     }
 }

@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <solid android:color="#CFCFCF"/>
-    <corners android:radius="7dp"/>
-</shape>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:shape="rectangle">
+            <solid android:color="#CFCFCF"/>
+            <corners android:radius="7dp"/>
+        </shape>
+    </item>
+    <item
+        android:bottom="8dp"
+        android:drawable="@drawable/ic_song"
+        android:left="8dp"
+        android:right="8dp"
+        android:top="8dp">
+    </item>
+</layer-list>

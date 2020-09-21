@@ -9,18 +9,18 @@ import org.maktab36.musicplayer.controller.fragment.SongPlayFragment;
 import org.maktab36.musicplayer.model.Song;
 
 public class SongPlayActivity extends SingleFragmentActivity {
-    public static final String EXTRA_SONG="extraSong";
+    public static final String EXTRA_SONG_POSITION ="extraSongPosition";
 
-    public static Intent newIntent(Context context, Song song) {
+    public static Intent newIntent(Context context,int position) {
         Intent intent=new Intent(context,SongPlayActivity.class);
-        intent.putExtra(EXTRA_SONG,song);
+        intent.putExtra(EXTRA_SONG_POSITION,position);
         return intent;
     }
 
 
     @Override
     public Fragment createFragment() {
-        Song song= (Song) getIntent().getSerializableExtra(EXTRA_SONG);
-        return SongPlayFragment.newInstance(song);
+        int position= getIntent().getIntExtra(EXTRA_SONG_POSITION,0);
+        return SongPlayFragment.newInstance(position);
     }
 }
