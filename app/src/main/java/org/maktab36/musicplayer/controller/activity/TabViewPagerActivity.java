@@ -1,20 +1,16 @@
 package org.maktab36.musicplayer.controller.activity;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
@@ -24,12 +20,16 @@ import org.maktab36.musicplayer.controller.fragment.AlbumListFragment;
 import org.maktab36.musicplayer.controller.fragment.ArtistListFragment;
 import org.maktab36.musicplayer.controller.fragment.SongListFragment;
 
-public class TabViewPagerActivity extends AppCompatActivity {
-    public static final String DIALOG_FRAGMENT_TAG = "activityDialog";
+import java.util.List;
+
+import pub.devrel.easypermissions.EasyPermissions;
+
+public class TabViewPagerActivity extends AppCompatActivity
+        implements EasyPermissions.PermissionCallbacks {
+    private static final int EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE = 1;
     private TabLayout mTabLayout;
     private ViewPager2 mTabViewPager;
     private FragmentStateAdapter mViewPagerAdapter;
-//    private TaskRepository mRepository;
 
     public static Intent newIntent(Context context) {
         Intent intent = new Intent(context, TabViewPagerActivity.class);
@@ -40,12 +40,30 @@ public class TabViewPagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tab_view_pager);
-//        mRepository = TaskRepository.getInstance(this);
+        String[] perms = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE};
+        if (EasyPermissions.hasPermissions(this, perms)) {
+            findViews();
+            updateUI();
+            connectViewPagerWithTabLayout();
+        } else {
+            EasyPermissions.requestPermissions(this, getString(R.string.permission_rational),
+                    EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE, perms);
+        }
 
-        findViews();
-        updateUI();
-        setListener();
+    }
 
+    private void findViews() {
+        mTabLayout = findViewById(R.id.tab_layout);
+        mTabViewPager = findViewById(R.id.view_pager_tabs);
+    }
+
+    private void updateUI() {
+        mViewPagerAdapter = new SongViewPagerAdapter(this);
+        mTabViewPager.setAdapter(mViewPagerAdapter);
+
+    }
+
+    private void connectViewPagerWithTabLayout() {
         new TabLayoutMediator(mTabLayout, mTabViewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
@@ -64,33 +82,33 @@ public class TabViewPagerActivity extends AppCompatActivity {
         }).attach();
     }
 
-    /*@Override
-    protected void onResume() {
-        super.onResume();
-        updateFragments();
-    }*/
 
-    private void findViews() {
-        mTabLayout = findViewById(R.id.tab_layout);
-        mTabViewPager = findViewById(R.id.view_pager_tabs);
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        EasyPermissions.onRequestPermissionsResult(
+                requestCode,
+                permissions,
+                grantResults,
+                this);
     }
 
-    private void setListener() {
-    }
-
-    /*public void updateFragments() {
-        for (Fragment fragment : getSupportFragmentManager().getFragments()) {
-            if (fragment instanceof TaskListFragment) {
-                TaskListFragment listFragment = (TaskListFragment) fragment;
-                listFragment.updateUI();
-            }
+    @Override
+    public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
+        if(requestCode==EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE) {
+            findViews();
+            updateUI();
+            connectViewPagerWithTabLayout();
         }
-    }*/
-
-    private void updateUI() {
-        mViewPagerAdapter = new SongViewPagerAdapter(this);
-        mTabViewPager.setAdapter(mViewPagerAdapter);
     }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
+        if(requestCode==EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE){
+            finish();
+        }
+    }
+
 
     private class SongViewPagerAdapter extends FragmentStateAdapter {
         public SongViewPagerAdapter(@NonNull FragmentActivity fragmentActivity) {
@@ -106,71 +124,13 @@ public class TabViewPagerActivity extends AppCompatActivity {
                 case 2:
                     return AlbumListFragment.newInstance();
                 default:
-                    return SongListFragment.newInstance(null,null);
+                    return SongListFragment.newInstance(null, null);
             }
         }
+
         @Override
         public int getItemCount() {
             return 3;
         }
     }
-
-    /*@Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_tasks_list, menu);
-        setMenuItemVisibility(menu);
-        return true;
-    }
-
-    private void setMenuItemVisibility(Menu menu) {
-        MenuItem item= menu.findItem(R.id.menu_admin_panel);
-        UserRepository repository=UserRepository.getInstance(this);
-        if(repository.getCurrentUser().equals(repository.getAdmin())){
-            item.setVisible(true);
-        }
-    }
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_user_delete_all:
-                showDeleteDialog();
-                return true;
-            case R.id.menu_user_log_out:
-                startLoginActivity();
-                finish();
-                return true;
-            case R.id.menu_admin_panel:
-                startAdminActivity();
-                return true;
-            case R.id.menu_search:
-                startSearchActivity();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }*/
-
-    /*private void showDeleteDialog() {
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.dialog_delete_all_title)
-                .setMessage(R.string.dialog_delete_all_message)
-                .setPositiveButton(R.string.button_delete, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        mRepository.deleteAll(UserRepository.
-                                getInstance(TabViewPagerActivity.this).
-                                getCurrentUser().
-                                getUUID());
-                        updateFragments();
-                    }
-                })
-                .setNegativeButton(android.R.string.cancel, null)
-                .create();
-        dialog.show();
-    }*/
-    /*private void startSearchActivity(){
-        Intent intent= SearchActivity.newIntent(this);
-        startActivity(intent);
-    }*/
 }

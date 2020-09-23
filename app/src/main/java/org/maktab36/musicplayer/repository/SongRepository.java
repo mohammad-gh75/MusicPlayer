@@ -1,5 +1,6 @@
 package org.maktab36.musicplayer.repository;
 
+import android.Manifest;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -19,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class SongRepository {
     private static SongRepository sSongRepository;
