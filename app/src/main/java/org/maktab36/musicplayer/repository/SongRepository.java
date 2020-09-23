@@ -15,6 +15,7 @@ import org.maktab36.musicplayer.model.Album;
 import org.maktab36.musicplayer.model.Artist;
 import org.maktab36.musicplayer.model.Song;
 import org.maktab36.musicplayer.model.SongRepeatStates;
+import org.maktab36.musicplayer.utils.PictureUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -107,8 +108,8 @@ public class SongRepository {
         metadataRetriever.setDataSource(songPath);
         byteCover = metadataRetriever.getEmbeddedPicture();
         if (byteCover != null) {
-//            cover= PictureUtils.getScaledBitmap(byteCover,180,180);
-            cover = BitmapFactory.decodeByteArray(byteCover, 0, byteCover.length);
+            cover= PictureUtils.getScaledBitmap(byteCover,mContext);
+//            cover = BitmapFactory.decodeByteArray(byteCover, 0, byteCover.length);
         } else {
             /*cover = BitmapFactory
                     .decodeResource(mContext.getResources(), R.drawable.ic_song);*/

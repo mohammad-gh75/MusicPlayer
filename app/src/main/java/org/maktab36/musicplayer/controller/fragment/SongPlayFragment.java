@@ -63,7 +63,7 @@ public class SongPlayFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mRepository = SongRepository.getInstance(getActivity());
-        mCurrentSongPosition =getArguments().getInt(ARG_SONG_POSITION);
+        mCurrentSongPosition = getArguments().getInt(ARG_SONG_POSITION);
         mPlayList = mRepository.getCurrentPlayList();
         setCurrentSong(mCurrentSongPosition);
         mPlayer = mRepository.getPlayer();
@@ -205,44 +205,44 @@ public class SongPlayFragment extends Fragment {
         mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                    switch (mRepeatState) {
-                        case PLAY_IN_ORDER:
-                            mCurrentSongPosition++;
-                            if (mCurrentSongPosition == mPlayList.size()) {
-                                mp.pause();
-                                mButtonPlay.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
-                                        R.drawable.ic_play, null));
-                            }else{
-                                setCurrentSong(mCurrentSongPosition);
-                                updateUI();
-                                playSong();
-                            }
-                            break;
-                        case REPEAT_ALL:
-                            mCurrentSongPosition++;
-                            if (mCurrentSongPosition == mPlayList.size()) {
-                                mCurrentSongPosition = 0;
-                            }
+                switch (mRepeatState) {
+                    case PLAY_IN_ORDER:
+                        mCurrentSongPosition++;
+                        if (mCurrentSongPosition == mPlayList.size()) {
+                            mp.pause();
+                            mButtonPlay.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
+                                    R.drawable.ic_play, null));
+                        } else {
                             setCurrentSong(mCurrentSongPosition);
                             updateUI();
                             playSong();
-                            break;
-                        case REPEAT_ONE:
-                            mPlayer.start();
-                            break;
-                        case SHUFFLE:
-                            Random random = new Random();
-                            int rand;
-                            do {
-                                rand = random.nextInt(mPlayList.size());
-                            } while (mCurrentSongPosition == rand);
-                            mCurrentSongPosition = rand;
-                            setCurrentSong(mCurrentSongPosition);
-                            updateUI();
-                            playSong();
-                            break;
-                    }
+                        }
+                        break;
+                    case REPEAT_ALL:
+                        mCurrentSongPosition++;
+                        if (mCurrentSongPosition == mPlayList.size()) {
+                            mCurrentSongPosition = 0;
+                        }
+                        setCurrentSong(mCurrentSongPosition);
+                        updateUI();
+                        playSong();
+                        break;
+                    case REPEAT_ONE:
+                        mPlayer.start();
+                        break;
+                    case SHUFFLE:
+                        Random random = new Random();
+                        int rand;
+                        do {
+                            rand = random.nextInt(mPlayList.size());
+                        } while (mCurrentSongPosition == rand);
+                        mCurrentSongPosition = rand;
+                        setCurrentSong(mCurrentSongPosition);
+                        updateUI();
+                        playSong();
+                        break;
                 }
+            }
         });
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -265,12 +265,14 @@ public class SongPlayFragment extends Fragment {
 
     private void nextSong() {
         if (mRepeatState == SongRepeatStates.SHUFFLE) {
-            Random random = new Random();
-            int rand;
-            do {
-                rand = random.nextInt(mPlayList.size());
-            } while (mCurrentSongPosition == rand);
-            mCurrentSongPosition =rand;
+            if (mPlayList.size() != 1) {
+                Random random = new Random();
+                int rand;
+                do {
+                    rand = random.nextInt(mPlayList.size());
+                } while (mCurrentSongPosition == rand);
+                mCurrentSongPosition = rand;
+            }
         } else {
             mCurrentSongPosition++;
             if (mCurrentSongPosition == mPlayList.size()) {
@@ -281,6 +283,7 @@ public class SongPlayFragment extends Fragment {
         updateUI();
         playSong();
     }
+
     private void previousSong() {
         if (mRepeatState == SongRepeatStates.SHUFFLE) {
             Random random = new Random();
@@ -288,11 +291,11 @@ public class SongPlayFragment extends Fragment {
             do {
                 rand = random.nextInt(mPlayList.size());
             } while (mCurrentSongPosition == rand);
-            mCurrentSongPosition =rand;
+            mCurrentSongPosition = rand;
         } else {
             mCurrentSongPosition--;
-            if (mCurrentSongPosition ==-1) {
-                mCurrentSongPosition = mPlayList.size()-1;
+            if (mCurrentSongPosition == -1) {
+                mCurrentSongPosition = mPlayList.size() - 1;
             }
         }
         setCurrentSong(mCurrentSongPosition);

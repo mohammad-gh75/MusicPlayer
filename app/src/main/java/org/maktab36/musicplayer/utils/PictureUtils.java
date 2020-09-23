@@ -1,7 +1,11 @@
 package org.maktab36.musicplayer.utils;
 
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.util.DisplayMetrics;
 
 public class PictureUtils {
 
@@ -19,22 +23,19 @@ public class PictureUtils {
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
 
-        Bitmap bitmap=BitmapFactory.decodeFile(path, bmOptions);
-        return bitmap;
+        return BitmapFactory.decodeFile(path, bmOptions);
     }
 
-    /*public static Bitmap getScaledBitmap(String path, ImageView imageView) {
+    public static Bitmap getScaledBitmap(String path, Activity activity) {
         Point size = new Point();
-//        activity.getWindowManager().getDefaultDisplay().getSize(size);
-        size.x=imageView.getWidth();
-        size.y=imageView.getHeight();
+        activity.getWindowManager().getDefaultDisplay().getSize(size);
         return getScaledBitmap(path, size.x, size.y);
-    }*/
+    }
 
-    public static Bitmap getScaledBitmap(byte[] byteCover,int destWidth, int destHeight){
+    public static Bitmap getScaledBitmap(byte[] byteCover, int destWidth, int destHeight) {
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeByteArray(byteCover,0,byteCover.length,bmOptions);
+        BitmapFactory.decodeByteArray(byteCover, 0, byteCover.length, bmOptions);
 
         int srcWidth = bmOptions.outWidth;
         int srcHeight = bmOptions.outHeight;
@@ -44,7 +45,13 @@ public class PictureUtils {
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
-        Bitmap bitmap=BitmapFactory.decodeByteArray(byteCover,0,byteCover.length,bmOptions);
-        return bitmap;
+        return BitmapFactory.decodeByteArray(byteCover, 0, byteCover.length, bmOptions);
+    }
+
+    public static Bitmap getScaledBitmap(byte[] byteCover, Context context){
+        DisplayMetrics metrics=context.getResources().getDisplayMetrics();
+        int x=metrics.widthPixels;
+        int y=metrics.heightPixels;
+        return getScaledBitmap(byteCover,x,y);
     }
 }
