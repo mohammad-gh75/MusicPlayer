@@ -2,9 +2,12 @@ package org.maktab36.musicplayer.controller.fragment;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 
@@ -102,7 +105,12 @@ public class SongPlayFragment extends Fragment {
         mPlayer.reset();
         mSongTitle.setText(mSong.getTitle());
         mArtistName.setText(mSong.getArtist());
-        mSongIcon.setImageBitmap(mSong.getCover());
+        if (mSong.getCover() != null) {
+            mSongIcon.setImageBitmap(mSong.getCover());
+        } else {
+            mSongIcon.setImageDrawable(ResourcesCompat.getDrawable(getResources(),
+                    R.drawable.shape_play_page, null));
+        }
 
         switch (mRepeatState) {
             case PLAY_IN_ORDER:
@@ -286,12 +294,14 @@ public class SongPlayFragment extends Fragment {
 
     private void previousSong() {
         if (mRepeatState == SongRepeatStates.SHUFFLE) {
-            Random random = new Random();
-            int rand;
-            do {
-                rand = random.nextInt(mPlayList.size());
-            } while (mCurrentSongPosition == rand);
-            mCurrentSongPosition = rand;
+            if (mPlayList.size() != 1) {
+                Random random = new Random();
+                int rand;
+                do {
+                    rand = random.nextInt(mPlayList.size());
+                } while (mCurrentSongPosition == rand);
+                mCurrentSongPosition = rand;
+            }
         } else {
             mCurrentSongPosition--;
             if (mCurrentSongPosition == -1) {

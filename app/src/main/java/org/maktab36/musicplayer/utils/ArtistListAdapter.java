@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -82,7 +83,12 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Ar
             String numberOfSong=mFragment.getString(R.string.number_of_song,
                     artist.getNumberOfSongs());
             mNumberOfSong.setText(numberOfSong);
-            mArtistListIcon.setImageBitmap(artist.getCover());
+            if(artist.getCover()!=null) {
+                mArtistListIcon.setImageBitmap(artist.getCover());
+            }else{
+                mArtistListIcon.setImageDrawable(ResourcesCompat.getDrawable(mFragment.
+                        getResources(),R.drawable.shape_artist_list, null));
+            }
         }
     }
 }

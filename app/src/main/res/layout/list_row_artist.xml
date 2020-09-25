@@ -5,16 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/artist_list_icon"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/shape_artist_list"
-        android:padding="10dp"
+        app:cardCornerRadius="30dp"
+        app:cardElevation="0dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/artist_list_icon"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:srcCompat="@drawable/shape_artist_list" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/artist_name"
@@ -29,8 +37,8 @@
         android:textColor="#000000"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/artist_list_icon"
-        app:layout_constraintTop_toTopOf="@+id/artist_list_icon" />
+        app:layout_constraintStart_toEndOf="@+id/cardView2"
+        app:layout_constraintTop_toTopOf="@+id/cardView2" />
 
     <TextView
         android:id="@+id/number_of_song"
@@ -40,10 +48,10 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="4dp"
         android:text="TextView"
-        app:layout_constraintBottom_toBottomOf="@+id/artist_list_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/cardView2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/artist_list_icon"
+        app:layout_constraintStart_toEndOf="@+id/cardView2"
         app:layout_constraintTop_toBottomOf="@+id/artist_name" />
 
     <View
@@ -55,5 +63,5 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/number_of_song"
         app:layout_constraintStart_toStartOf="@+id/number_of_song"
-        app:layout_constraintTop_toBottomOf="@+id/artist_list_icon" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 </androidx.constraintlayout.widget.ConstraintLayout>
