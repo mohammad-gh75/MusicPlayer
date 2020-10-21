@@ -1,11 +1,10 @@
-package org.maktab36.musicplayer.utils;
+package org.maktab36.musicplayer.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,7 +16,6 @@ import org.maktab36.musicplayer.model.Song;
 import org.maktab36.musicplayer.repository.SongRepository;
 
 import java.util.List;
-import java.util.UUID;
 
 public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongHolder> {
     private List<Song> mSongList;
@@ -43,7 +41,7 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongHo
     @Override
     public void onBindViewHolder(@NonNull SongHolder holder, int position) {
         Song song = mSongList.get(position);
-        holder.bindTask(song,position);
+        holder.bindTask(song, position);
     }
 
     @Override
@@ -59,25 +57,25 @@ public class SongListAdapter extends RecyclerView.Adapter<SongListAdapter.SongHo
 
         public SongHolder(@NonNull View itemView) {
             super(itemView);
-            mSongTitle=itemView.findViewById(R.id.song_title);
-            mSongArtistAndAlbum=itemView.findViewById(R.id.song_artist_and_album);
+            mSongTitle = itemView.findViewById(R.id.song_title);
+            mSongArtistAndAlbum = itemView.findViewById(R.id.song_artist_and_album);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     SongRepository.getInstance(mFragment.getActivity()).setCurrentPlayList(mSongList);
-                    Intent intent= SongPlayActivity.newIntent(mFragment.getActivity(),mPosition);
+                    Intent intent = SongPlayActivity.newIntent(mFragment.getActivity(), mPosition);
                     mFragment.startActivity(intent);
                 }
             });
         }
 
-        public void bindTask(Song song,int position) {
+        public void bindTask(Song song, int position) {
             mSong = song;
-            mPosition=position;
+            mPosition = position;
             mSongTitle.setText(song.getTitle());
-            String artistAndAlbum=mFragment.getString(R.string.song_artist_and_album,
-                    song.getArtist(),song.getAlbum());
+            String artistAndAlbum = mFragment.getString(R.string.song_artist_and_album,
+                    song.getArtist(), song.getAlbum());
             mSongArtistAndAlbum.setText(artistAndAlbum);
 
         }

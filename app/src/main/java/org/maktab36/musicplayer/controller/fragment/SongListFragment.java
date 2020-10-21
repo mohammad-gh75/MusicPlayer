@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.maktab36.musicplayer.R;
+import org.maktab36.musicplayer.adapters.SongListAdapter;
 import org.maktab36.musicplayer.model.Song;
 import org.maktab36.musicplayer.repository.SongRepository;
-import org.maktab36.musicplayer.utils.SongListAdapter;
 
 import java.util.List;
 

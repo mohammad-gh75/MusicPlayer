@@ -1,21 +1,18 @@
 package org.maktab36.musicplayer.controller.fragment;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import org.maktab36.musicplayer.R;
+import org.maktab36.musicplayer.adapters.AlbumListAdapter;
 import org.maktab36.musicplayer.model.Album;
-import org.maktab36.musicplayer.model.Artist;
 import org.maktab36.musicplayer.repository.SongRepository;
-import org.maktab36.musicplayer.utils.AlbumListAdapter;
-import org.maktab36.musicplayer.utils.ArtistListAdapter;
 
 import java.util.List;
 
@@ -49,7 +46,7 @@ public class AlbumListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_album_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_album_list, container, false);
         findViews(view);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         updateUI();
@@ -63,7 +60,7 @@ public class AlbumListFragment extends Fragment {
     private void updateUI() {
         mAlbums = mRepository.getAlbumList();
         if (mAdapter == null) {
-            mAdapter = new AlbumListAdapter(this,mAlbums);
+            mAdapter = new AlbumListAdapter(this, mAlbums);
             mRecyclerView.setAdapter(mAdapter);
         } else {
             mAdapter.setAlbumList(mAlbums);

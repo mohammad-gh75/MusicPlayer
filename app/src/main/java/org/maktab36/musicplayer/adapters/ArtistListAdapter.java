@@ -1,4 +1,4 @@
-package org.maktab36.musicplayer.utils;
+package org.maktab36.musicplayer.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.maktab36.musicplayer.R;
 import org.maktab36.musicplayer.controller.activity.SongListActivity;
 import org.maktab36.musicplayer.model.Artist;
-import org.maktab36.musicplayer.model.Song;
-import org.maktab36.musicplayer.repository.SongRepository;
 
 import java.util.List;
 
@@ -61,15 +59,15 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Ar
         public ArtistHolder(@NonNull View itemView) {
             super(itemView);
 
-            mArtistName=itemView.findViewById(R.id.artist_name);
-            mNumberOfSong=itemView.findViewById(R.id.number_of_song);
-            mArtistListIcon=itemView.findViewById(R.id.artist_list_icon);
+            mArtistName = itemView.findViewById(R.id.artist_name);
+            mNumberOfSong = itemView.findViewById(R.id.number_of_song);
+            mArtistListIcon = itemView.findViewById(R.id.artist_list_icon);
 
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent= SongListActivity.newIntent(mFragment.getActivity(),
+                    Intent intent = SongListActivity.newIntent(mFragment.getActivity(),
                             mArtist.getName(),
                             "artist");
                     mFragment.startActivity(intent);
@@ -80,14 +78,14 @@ public class ArtistListAdapter extends RecyclerView.Adapter<ArtistListAdapter.Ar
         public void bindTask(Artist artist) {
             mArtist = artist;
             mArtistName.setText(artist.getName());
-            String numberOfSong=mFragment.getString(R.string.number_of_song,
+            String numberOfSong = mFragment.getString(R.string.number_of_song,
                     artist.getNumberOfSongs());
             mNumberOfSong.setText(numberOfSong);
-            if(artist.getCover()!=null) {
+            if (artist.getCover() != null) {
                 mArtistListIcon.setImageBitmap(artist.getCover());
-            }else{
+            } else {
                 mArtistListIcon.setImageDrawable(ResourcesCompat.getDrawable(mFragment.
-                        getResources(),R.drawable.shape_artist_list, null));
+                        getResources(), R.drawable.shape_artist_list, null));
             }
         }
     }

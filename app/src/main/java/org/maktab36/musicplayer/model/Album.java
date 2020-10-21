@@ -31,13 +31,13 @@ public class Album {
         mCover = cover;
     }
 
-    public Album(String name,Bitmap cover) {
-        this(name,1,cover);
+    public Album(String name, Bitmap cover) {
+        this(name, 1, cover);
     }
 
-    public Album(String name, int numberOfSong,Bitmap cover) {
+    public Album(String name, int numberOfSong, Bitmap cover) {
         mName = name;
         mNumberOfSong = numberOfSong;
-        mCover=cover;
+        mCover = cover;
     }
 }

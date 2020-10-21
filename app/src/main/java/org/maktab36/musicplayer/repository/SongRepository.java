@@ -1,16 +1,13 @@
 package org.maktab36.musicplayer.repository;
 
-import android.Manifest;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import org.maktab36.musicplayer.R;
 import org.maktab36.musicplayer.model.Album;
 import org.maktab36.musicplayer.model.Artist;
 import org.maktab36.musicplayer.model.Song;
@@ -21,8 +18,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-
-import pub.devrel.easypermissions.EasyPermissions;
 
 public class SongRepository {
     private static SongRepository sSongRepository;
@@ -91,8 +86,8 @@ public class SongRepository {
 
                     Bitmap cover = getAlbumCover(path);
                     mSongList.add(new Song(path, title, artist, album, cover));
-                    addToArtistList(artist,cover);
-                    addToAlbumList(album,cover);
+                    addToArtistList(artist, cover);
+                    addToAlbumList(album, cover);
                     cursor.moveToNext();
                 }
             } finally {
@@ -108,12 +103,12 @@ public class SongRepository {
         metadataRetriever.setDataSource(songPath);
         byteCover = metadataRetriever.getEmbeddedPicture();
         if (byteCover != null) {
-            cover= PictureUtils.getScaledBitmap(byteCover,mContext);
+            cover = PictureUtils.getScaledBitmap(byteCover, mContext);
 //            cover = BitmapFactory.decodeByteArray(byteCover, 0, byteCover.length);
         } else {
             /*cover = BitmapFactory
                     .decodeResource(mContext.getResources(), R.drawable.ic_song);*/
-            cover=null;
+            cover = null;
         }
 
         /*Uri uri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
@@ -166,10 +161,10 @@ public class SongRepository {
         return mArtistList;
     }
 
-    private void addToArtistList(String name,Bitmap cover) {
+    private void addToArtistList(String name, Bitmap cover) {
         boolean equalityFlag = false;
         if (mArtistList.size() == 0) {
-            Artist artist = new Artist(name,cover);
+            Artist artist = new Artist(name, cover);
             mArtistList.add(artist);
         } else {
             for (Artist artist : mArtistList) {
@@ -179,7 +174,7 @@ public class SongRepository {
                 }
             }
             if (!equalityFlag) {
-                Artist artist1 = new Artist(name,cover);
+                Artist artist1 = new Artist(name, cover);
                 mArtistList.add(artist1);
             }
         }
@@ -195,10 +190,10 @@ public class SongRepository {
         return mAlbumList;
     }
 
-    private void addToAlbumList(String name,Bitmap cover) {
+    private void addToAlbumList(String name, Bitmap cover) {
         boolean equalityFlag = false;
         if (mAlbumList.size() == 0) {
-            Album album = new Album(name,cover);
+            Album album = new Album(name, cover);
             mAlbumList.add(album);
         } else {
             for (Album album : mAlbumList) {
@@ -208,7 +203,7 @@ public class SongRepository {
                 }
             }
             if (!equalityFlag) {
-                Album album = new Album(name,cover);
+                Album album = new Album(name, cover);
                 mAlbumList.add(album);
             }
         }

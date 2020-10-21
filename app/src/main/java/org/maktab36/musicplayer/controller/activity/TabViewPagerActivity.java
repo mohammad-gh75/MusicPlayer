@@ -3,9 +3,7 @@ package org.maktab36.musicplayer.controller.activity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Point;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -97,7 +95,7 @@ public class TabViewPagerActivity extends AppCompatActivity
 
     @Override
     public void onPermissionsGranted(int requestCode, @NonNull List<String> perms) {
-        if(requestCode==EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE) {
+        if (requestCode == EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE) {
             findViews();
             updateUI();
             connectViewPagerWithTabLayout();
@@ -106,7 +104,7 @@ public class TabViewPagerActivity extends AppCompatActivity
 
     @Override
     public void onPermissionsDenied(int requestCode, @NonNull List<String> perms) {
-        if(requestCode==EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE){
+        if (requestCode == EXTERNAL_STORAGE_PERMISSION_REQUEST_CODE) {
             finish();
         }
     }

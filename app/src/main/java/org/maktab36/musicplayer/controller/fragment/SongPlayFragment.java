@@ -1,16 +1,7 @@
 package org.maktab36.musicplayer.controller.fragment;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-
-import androidx.cardview.widget.CardView;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.core.content.res.ResourcesCompat;
+import androidx.fragment.app.Fragment;
 
 import org.maktab36.musicplayer.R;
 import org.maktab36.musicplayer.model.Song;
@@ -142,7 +136,7 @@ public class SongPlayFragment extends Fragment {
                     if (mPlayer != null) {
                         mSeekBar.setProgress(mPlayer.getCurrentPosition() / 1000);
                     }
-                    handler.post(this);
+                    handler.postDelayed(this,1000);
                 }
             });
             mSongDuration.setText(getTimeText(mPlayer.getDuration()));

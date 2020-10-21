@@ -48,10 +48,10 @@ public class PictureUtils {
         return BitmapFactory.decodeByteArray(byteCover, 0, byteCover.length, bmOptions);
     }
 
-    public static Bitmap getScaledBitmap(byte[] byteCover, Context context){
-        DisplayMetrics metrics=context.getResources().getDisplayMetrics();
-        int x=metrics.widthPixels;
-        int y=metrics.heightPixels;
-        return getScaledBitmap(byteCover,x,y);
+    public static Bitmap getScaledBitmap(byte[] byteCover, Context context) {
+        DisplayMetrics metrics = context.getResources().getDisplayMetrics();
+        int x = metrics.widthPixels;
+        int y = metrics.heightPixels;
+        return getScaledBitmap(byteCover, x, y);
     }
 }

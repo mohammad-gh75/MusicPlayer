@@ -30,14 +30,15 @@ public class Artist {
     public void setCover(Bitmap cover) {
         mCover = cover;
     }
-    public Artist(String name, int numberOfSongs,Bitmap cover) {
+
+    public Artist(String name, int numberOfSongs, Bitmap cover) {
         mName = name;
         mNumberOfSongs = numberOfSongs;
-        mCover=cover;
+        mCover = cover;
     }
 
-    public Artist(String name,Bitmap cover) {
-        this(name,1,cover);
+    public Artist(String name, Bitmap cover) {
+        this(name, 1, cover);
     }
 
 }

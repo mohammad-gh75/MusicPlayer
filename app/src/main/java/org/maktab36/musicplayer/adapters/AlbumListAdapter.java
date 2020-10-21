@@ -1,4 +1,4 @@
-package org.maktab36.musicplayer.utils;
+package org.maktab36.musicplayer.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -59,14 +59,14 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Albu
         public AlbumHolder(@NonNull View itemView) {
             super(itemView);
 
-            mAlbumName=itemView.findViewById(R.id.album_name);
-            mNumberOfSong=itemView.findViewById(R.id.number_of_song);
-            mAlbumListIcon=itemView.findViewById(R.id.album_list_icon);
+            mAlbumName = itemView.findViewById(R.id.album_name);
+            mNumberOfSong = itemView.findViewById(R.id.number_of_song);
+            mAlbumListIcon = itemView.findViewById(R.id.album_list_icon);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent= SongListActivity.newIntent(mFragment.getActivity(),
+                    Intent intent = SongListActivity.newIntent(mFragment.getActivity(),
                             mAlbum.getName(),
                             "album");
                     mFragment.startActivity(intent);
@@ -75,16 +75,16 @@ public class AlbumListAdapter extends RecyclerView.Adapter<AlbumListAdapter.Albu
         }
 
         public void bindTask(Album album) {
-            mAlbum=album;
+            mAlbum = album;
             mAlbumName.setText(album.getName());
-            String numberOfSong=mFragment.getString(R.string.number_of_song,
+            String numberOfSong = mFragment.getString(R.string.number_of_song,
                     album.getNumberOfSong());
             mNumberOfSong.setText(numberOfSong);
-            if(album.getCover()!=null) {
+            if (album.getCover() != null) {
                 mAlbumListIcon.setImageBitmap(album.getCover());
-            }else{
+            } else {
                 mAlbumListIcon.setImageDrawable(ResourcesCompat.getDrawable(mFragment.
-                                getResources(),R.drawable.shape_album_list, null));
+                        getResources(), R.drawable.shape_album_list, null));
             }
         }
     }
